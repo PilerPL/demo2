@@ -10,7 +10,8 @@ public class DemoApplication {
 //        SpringApplication.run(DemoApplication.class, args);
         int[] a = new int[]{1,8,6,2,5,4,8,3,7};
         System.out.println(getMaxArea(a));
-
+        System.out.println(getMaxArea(a));
+        System.out.println(getMaxArea(a));
     }
 
     public static int getMaxArea(int[] a) {
