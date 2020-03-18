@@ -11,7 +11,7 @@ public class DemoApplication {
         int[] a = new int[]{1,8,6,2,5,4,8,3,7};
         System.out.println(getMaxArea(a));
         System.out.println(getMaxArea(a));
-        System.out.println(getMaxArea(a));
+        System.out.println(1);
     }
 
     public static int getMaxArea(int[] a) {
