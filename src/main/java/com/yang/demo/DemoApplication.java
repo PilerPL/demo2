@@ -1,18 +1,44 @@
 package com.yang.demo;
 
+import com.alibaba.nacos.api.annotation.NacosInjected;
+import com.alibaba.nacos.api.exception.NacosException;
+import com.alibaba.nacos.api.naming.NamingService;
+import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
-public class DemoApplication {
+import javax.annotation.PostConstruct;
 
-    public static void main(String[] args) {
-//        SpringApplication.run(DemoApplication.class, args);
-        int[] a = new int[]{1,8,6,2,5,4,8,3,7};
-        System.out.println(getMaxArea(a));
-        System.out.println(getMaxArea(a));
-        System.out.println(getMaxArea(a));
+@SpringBootApplication(scanBasePackages = "com")
+@NacosPropertySource(dataId = "demoId",groupId = "nacosdemo",autoRefreshed = true)
+public class DemoApplication {
+    @NacosInjected
+    private NamingService namingService;
+    @Value("${server.port}")
+    private int serverPort;
+
+    @Value("${spring.application.name}")
+    private String applicationName;
+    //curl -X PUT 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=xxx&ip=127.0.0.1&port=8080'
+    @PostConstruct
+    public void registerInstance() throws NacosException, NacosException {
+        namingService.registerInstance(applicationName,"127.0.0.1",serverPort);
+//        if(CollectionUtils.isEmpty(namingService.getAllInstances(applicationName))){
+//            namingService.registerInstance(applicationName,"127.0.0.1",serverPort);
+//        }
     }
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+//        int[] a = new int[]{1,8,6,2,5,4,8,3,7};
+//        System.out.println(getMaxArea(a));
+//        System.out.println(getMaxArea(a));
+//        System.out.println(getMaxArea(a));
+
+    }
+
+
+
 
     public static int getMaxArea(int[] a) {
         int hg = a.length;//数组长度
